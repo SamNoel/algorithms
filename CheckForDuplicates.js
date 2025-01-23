@@ -21,6 +21,11 @@ function hasDuplicateValueInefficient(array) {
 }
 
 // Efficient version - O(N)
+/** This only needs to run once, because as the alg goes through the array, it adds
+ * a value to the index of the value of array[i]. If that value shows up again in the
+ * array, it will check against the new array to see if there is a value and return
+ * true if so.
+ */
 function hasDuplicateValueEfficient(array) {
   var steps = 0;
   var existingNumbers = [];
