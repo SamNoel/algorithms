@@ -84,3 +84,27 @@ function selectionSort(array) {
 
 list = [65, 55, 45, 35, 25, 20, 12, 11, 10, 9];
 selectionSort(list);
+
+/** ---------------------Insertion Sort--------------------- */
+function insertionSort(array) {
+  var steps = 0;
+  for (var i = 1; i < array.length; i++) {
+    var position = i;
+    var tempValue = array[i];
+
+    while (position > 0 && array[position - 1] < tempValue) {
+      array[position] = array[position - 1];
+      position = position - 1;
+      steps++;
+    }
+
+    array[position] = tempValue;
+    steps++;
+  }
+
+  console.log("Steps: " + steps);
+  console.log(array);
+}
+
+list = [65, 55, 45, 35, 25, 20, 12, 11, 10, 9];
+insertionSort(list);
