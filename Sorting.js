@@ -86,6 +86,21 @@ list = [65, 55, 45, 35, 25, 20, 12, 11, 10, 9];
 selectionSort(list);
 
 /** ---------------------Insertion Sort--------------------- */
+/** Technically the number of steps would be N2 + 2N - 2 steps.
+ * However, using Big O we can simplify this to O(N2 + N). BUT,
+ * this is not it. Big O Notation only takes into account the
+ * highest order of N. So we further simplify this to O(N2)
+ *
+ * *** In an average-case scenario, insertion sort is faster than
+ * selection sort. In a worst-case scenario, selection sort is faster.
+ *
+ * Whereas insertion sort steps can vary based on the scenario,
+ * Selection Sort takes N2 / 2 steps in all cases, from worst
+ * to average to best-case scenarios. This is because Selection
+ * Sort doesn’t have any mechanism for ending a passthrough early at any point.
+ * Each passthrough compares every value to the right of the chosen index no
+ * matter what.
+ */
 function insertionSort(array) {
   var steps = 0;
   for (var i = 1; i < array.length; i++) {
