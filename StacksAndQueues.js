@@ -90,3 +90,40 @@ function getMostRecentOpeningBrace(array) {
 var textVal = "(var x = {y: [1, 2, 3]})";
 
 codeLinter(textVal);
+
+/** QUEUES
+ *
+ * With queues, the first item added to the queue is the first item to be removed. (FIFO)
+ * Like stacks, queues are arrays with three restrictions (it’s just a different set of restrictions):
+ *
+ * Data can only be inserted at the end of a queue. (This is identical behavior as the stack.)
+ * Data can only be read from the front of a queue. (This is the opposite of behavior of the stack.)
+ * Data can only be removed from the front of a queue. (This, too, is the opposite behavior of the stack.)
+ *
+ */
+
+function PrintManager(queue) {
+  this.queue = queue;
+
+  this.queuePrintJob = function (document) {
+    queue.push(document);
+  };
+
+  this.run = function () {
+    while (queue.length > 0) {
+      // this shift() method removes and returns the first element
+      this.print(queue.shift());
+    }
+  };
+
+  this.print = function (document) {
+    // code for the printer would go here, but we'll just console.log
+    console.log(document);
+  };
+}
+
+const printManager = new PrintManager([]);
+printManager.queuePrintJob("First Document");
+printManager.queuePrintJob("Second Document");
+printManager.queuePrintJob("Third Document");
+printManager.run();
