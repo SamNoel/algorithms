@@ -24,6 +24,11 @@ countdown(10);
  * which functions it’s in the middle of calling. This stack is known, appropriately
  * enough, as the *****call stack*****.
  *
+ * Interestingly, in the case of infinite recursion (such as the very first example
+ * in our chapter), the program keeps on pushing the same method over and over
+ * again onto the call stack, until there’s no more room in the computer’s
+ * memory—and this causes an error known as stack overflow.
+ *
  * */
 function countdownRecursive(number) {
   if (number > 0) {
@@ -33,3 +38,40 @@ function countdownRecursive(number) {
   }
 }
 countdownRecursive(10);
+
+/** IMPORTANT: Recursion is a natural fit in any situation where you find yourself
+ * having to repeat an algorithm within the same algorithm.
+ *
+ * Take the example of traversing through a filesystem. Let’s say that you have a
+ * script that does something with every file inside of a directory. However, you
+ * don’t want the script to only deal with the files inside the one directory—you
+ * want it to act on all the files within the subdirectories of the directory, and the
+ * subdirectories of the subdirectories, and so on.
+ *
+ * Without recursion, we wouldn't be able to have a function that goes arbitrarily deep
+ * for any number of subdirectories.
+ *
+ * Ex:
+ *
+ */
+
+// Example method only, wont run
+function findDirectories(directory) {
+  for (file in directory) {
+    if (file.isDirectory && file.name != "." && file.name != "..") {
+      console.log(file.name);
+
+      // Here, we would have to have continuous inner loops for each subdir
+    }
+  }
+}
+
+// Using recursion (example method only, wont run):
+function findDirectoriesRecursive(directory) {
+  for (file in directory) {
+    if (file.isDirectory && file.name != "." && file.name != "..") {
+      console.log(file.name);
+      findDirectoriesRecursive(file.name);
+    }
+  }
+}
