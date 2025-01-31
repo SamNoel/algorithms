@@ -123,3 +123,63 @@ function insertionSort(array) {
 
 list = [65, 55, 45, 35, 25, 20, 12, 11, 10, 9];
 insertionSort(list);
+
+/** ---------------------Quick Sort--------------------- */
+/** In real life, however, none of these methods are actually used to sort arrays. Most
+ * computer languages have built-in sorting functions for arrays that save us the
+ * time and effort from implementing our own. And in many of these languages,
+ * the sorting algorithm that is employed under the hood is Quicksort.
+ *
+ * Quicksort is an extremely fast sorting algorithm that is particularly efficient
+ * for average scenarios. While in worst-case scenarios (that is, inversely sorted
+ * arrays), it performs similarly to Insertion Sort and Selection Sort, it is much
+ * faster for average scenarios—which are what occur most of the time.
+ */
+
+// First we will create a function that can partition an array (see pg 172 of DSA book)
+function SortableArray(array) {
+  this.array = array;
+
+  this.partition = (leftPointer, rightPointer) => {
+    // We always choose the right-most element as the pivot
+    let pivotPosition = rightPointer;
+    let pivot = this.array[pivotPosition];
+
+    // We start the right pointer immediately to the left of the pivot
+    rightPointer -= 1;
+
+    // While true loop will run indefinitely unless you explicity break out of it, which we do
+    while (true) {
+      // Increment the left pointer until it reaches a value that is greater than the pivot
+      while (this.array[leftPointer] < pivot) {
+        leftPointer++;
+      }
+
+      // Decrement the right pointer until it reaches a value that is less than the pivot
+      while (this.array[rightPointer] > pivot) {
+        rightPointer--;
+      }
+
+      // If the pivots meet, break out of the partition
+      if (leftPointer >= rightPointer) {
+        break;
+      } else {
+        // Else, swap the two pivot points and continue
+        this.swap(leftPointer, rightPointer);
+      }
+    }
+
+    // As a final step, we swap the left pointer with the pivot itself.
+    // At this point after the swap, the pivot value is in the correct position.
+    this.swap(leftPointer, pivotPosition);
+
+    // We return the left_pointer for the sake of the quicksort method
+    return leftPointer;
+  };
+
+  this.swap = (pointerOne, pointerTwo) => {
+    let tempVal = this.array[pointerOne];
+    this.array[pointerOne] = this.array[pointerTwo];
+    this.array[pointerTwo] = tempVal;
+  };
+}
