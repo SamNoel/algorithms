@@ -169,9 +169,11 @@ function SortableArray(array) {
       }
     }
 
-    // As a final step, we swap the left pointer with the pivot itself.
+    // As a final step, we swap the left pointer with the pivot itself (if not equal to the pivot position).
     // At this point after the swap, the pivot value is in the correct position.
-    this.swap(leftPointer, pivotPosition);
+    if (leftPointer != pivotPosition) {
+      this.swap(leftPointer, pivotPosition);
+    }
 
     // We return the left_pointer for the sake of the quicksort method
     return leftPointer;
@@ -182,4 +184,25 @@ function SortableArray(array) {
     this.array[pointerOne] = this.array[pointerTwo];
     this.array[pointerTwo] = tempVal;
   };
+
+  this.quickSort = (leftIndex, rightIndex) => {
+    // Base case: the subarray has 0 or 1 elements
+    if (rightIndex - leftIndex <= 0) {
+      return;
+    }
+
+    // Partition the array and grab the position of the pivot
+    let pivotPosition = this.partition(leftIndex, rightIndex);
+
+    // Recursively call this quicksort method on whatever is left of the pivot
+    this.quickSort(leftIndex, pivotPosition - 1);
+
+    // Recursively call this quicksort method on whatever is right of the pivot
+    this.quickSort(pivotPosition + 1, rightIndex);
+  };
 }
+
+let newArray = [0, 5, 2, 1, 6, 3, 4, 9];
+let sortableArray = new SortableArray(newArray);
+sortableArray.quickSort(0, newArray.length - 1);
+console.log("Quicksorted array: " + sortableArray.array);
