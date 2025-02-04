@@ -139,11 +139,12 @@ insertionSort(list);
 // First we will create a function that can partition an array (see pg 172 of DSA book)
 function SortableArray(array) {
   this.array = array;
+  this.pivotPosition;
 
   this.partition = (leftPointer, rightPointer) => {
     // We always choose the right-most element as the pivot
-    let pivotPosition = rightPointer;
-    let pivot = this.array[pivotPosition];
+    this.pivotPosition = rightPointer;
+    let pivot = this.array[this.pivotPosition];
 
     // We start the right pointer immediately to the left of the pivot
     rightPointer -= 1;
@@ -171,8 +172,8 @@ function SortableArray(array) {
 
     // As a final step, we swap the left pointer with the pivot itself (if not equal to the pivot position).
     // At this point after the swap, the pivot value is in the correct position.
-    if (leftPointer != pivotPosition) {
-      this.swap(leftPointer, pivotPosition);
+    if (leftPointer != this.pivotPosition) {
+      this.swap(leftPointer, this.pivotPosition);
     }
 
     // We return the left_pointer for the sake of the quicksort method
@@ -192,17 +193,73 @@ function SortableArray(array) {
     }
 
     // Partition the array and grab the position of the pivot
-    let pivotPosition = this.partition(leftIndex, rightIndex);
+    this.pivotPosition = this.partition(leftIndex, rightIndex);
 
     // Recursively call this quicksort method on whatever is left of the pivot
-    this.quickSort(leftIndex, pivotPosition - 1);
+    this.quickSort(leftIndex, this.pivotPosition - 1);
 
     // Recursively call this quicksort method on whatever is right of the pivot
-    this.quickSort(pivotPosition + 1, rightIndex);
+    this.quickSort(this.pivotPosition + 1, rightIndex);
+  };
+
+  this.quickSelect = (kthLowestValue, leftIndex, rightIndex) => {
+    // Base case: the subarray has 0 or 1 elements
+    if (rightIndex - leftIndex <= 0) {
+      console.log("array at left index: " + array);
+      return array[leftIndex];
+    }
+
+    console.log("Array: " + array);
+
+    // Partition the array and grab the position of the pivot
+    this.pivotPosition = this.partition(leftIndex, rightIndex);
+    console.log("pivot position: " + this.pivotPosition);
+
+    if (kthLowestValue < this.pivotPosition) {
+      // Recursively call this quickselect method on whatever is left of the pivot
+      console.log("calling recursively in if");
+      this.quickSelect(kthLowestValue, leftIndex, this.pivotPosition - 1);
+    } else if (kthLowestValue > this.pivotPosition) {
+      // Recursively call this quickselect method on whatever is right of the pivot
+      console.log("calling recursively in else if");
+      this.quickSelect(kthLowestValue, this.pivotPosition + 1, rightIndex);
+    } else {
+      //  if after the partition, the pivot position is in the same spot as the kth lowest value, we’ve found the value we’re looking for
+      console.log("array at pivot: " + array);
+      console.log("pivot position in else case: " + this.pivotPosition);
+      console.log("array at pivot position: " + array[this.pivotPosition]);
+      this.caseReached = true;
+      return array[this.pivotPosition];
+    }
+
+    // if (this.caseReached) {
+    //   return array[pivotPositionQuickSelect];
+    // }
   };
 }
 
+// This will not work with duplicates
 let newArray = [0, 5, 2, 1, 6, 3, 4, 9];
 let sortableArray = new SortableArray(newArray);
 sortableArray.quickSort(0, newArray.length - 1);
 console.log("Quicksorted array: " + sortableArray.array);
+
+/** ----------------------Quick Select------------------------- */
+/** Quickselect relies on partitioning just like Quicksort, and can be thought of as
+a hybrid of Quicksort and binary search. - PG 190 
+
+One of the beautiful things
+about Quickselect is that we can find the correct value without having to sort
+the entire array. This is O(N) for average scenarios, as opposed to Quicksort's O(N log N)
+
+see above in SortableArray object for Quickselect function
+*/
+let quickselectArray = [0, 50, 20, 10, 60, 30];
+let quickselectSortableArray = new SortableArray(quickselectArray);
+let resultVal = quickselectSortableArray.quickSelect(
+  1,
+  0,
+  quickselectArray.length - 1
+);
+console.log(resultVal);
+console.log("Quickselected array: " + resultVal);
