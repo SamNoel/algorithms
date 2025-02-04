@@ -140,6 +140,7 @@ insertionSort(list);
 function SortableArray(array) {
   this.array = array;
   this.pivotPosition;
+  this.counter = 0;
 
   this.partition = (leftPointer, rightPointer) => {
     // We always choose the right-most element as the pivot
@@ -203,38 +204,36 @@ function SortableArray(array) {
   };
 
   this.quickSelect = (kthLowestValue, leftIndex, rightIndex) => {
+    this.counter++;
     // Base case: the subarray has 0 or 1 elements
     if (rightIndex - leftIndex <= 0) {
-      console.log("array at left index: " + array);
-      return array[leftIndex];
+      return this.array[leftIndex];
     }
-
-    console.log("Array: " + array);
 
     // Partition the array and grab the position of the pivot
     this.pivotPosition = this.partition(leftIndex, rightIndex);
-    console.log("pivot position: " + this.pivotPosition);
 
     if (kthLowestValue < this.pivotPosition) {
       // Recursively call this quickselect method on whatever is left of the pivot
-      console.log("calling recursively in if");
-      this.quickSelect(kthLowestValue, leftIndex, this.pivotPosition - 1);
+      // NOTE: We need the return keyword to propogate the value up the stack after the recursive call.
+      return this.quickSelect(
+        kthLowestValue,
+        leftIndex,
+        this.pivotPosition - 1
+      );
     } else if (kthLowestValue > this.pivotPosition) {
       // Recursively call this quickselect method on whatever is right of the pivot
-      console.log("calling recursively in else if");
-      this.quickSelect(kthLowestValue, this.pivotPosition + 1, rightIndex);
+      // NOTE: We need the return keyword to propogate the value up the stack after the recursive call.
+      return this.quickSelect(
+        kthLowestValue,
+        this.pivotPosition + 1,
+        rightIndex
+      );
     } else {
-      //  if after the partition, the pivot position is in the same spot as the kth lowest value, we’ve found the value we’re looking for
-      console.log("array at pivot: " + array);
-      console.log("pivot position in else case: " + this.pivotPosition);
-      console.log("array at pivot position: " + array[this.pivotPosition]);
-      this.caseReached = true;
-      return array[this.pivotPosition];
+      //  if after the partition, the pivot position is in the same spot as the kth lowest value,
+      // we’ve found the value we’re looking for
+      return this.array[this.pivotPosition];
     }
-
-    // if (this.caseReached) {
-    //   return array[pivotPositionQuickSelect];
-    // }
   };
 }
 
@@ -256,7 +255,16 @@ see above in SortableArray object for Quickselect function
 */
 let quickselectArray = [0, 50, 20, 10, 60, 30];
 let quickselectSortableArray = new SortableArray(quickselectArray);
-let resultVal = quickselectSortableArray.quickSelect(
+var resultVal = quickselectSortableArray.quickSelect(
+  1,
+  0,
+  quickselectArray.length - 1
+);
+console.log(resultVal);
+console.log("Quickselected array: " + resultVal);
+
+// Should be the same result
+var resultVal2 = quickselectSortableArray.quickSelect(
   1,
   0,
   quickselectArray.length - 1
