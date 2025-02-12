@@ -44,6 +44,31 @@ function LinkedList(firstNode) {
     // If we get through the entire list, without finding the data, we return null:
     return null;
   };
+
+  /** the best- and worst-case scenarios for
+arrays and linked lists are the opposite of one another. That is, inserting at the
+beginning is great for linked lists, but terrible for arrays. And inserting at the
+end is an array’s best-case scenario, but the worst case when it comes to a
+linked list. */
+  this.insertAtIndex = (index, value) => {
+    // We begin at the first node of the list:
+    let currentNode = this.firstNode;
+    let currentIndex = 0;
+
+    //  First, we find the index immediately before where the new node will go:
+    while (currentIndex < index) {
+      // We keep following the links of each node until we get to the index we’re looking for:
+      currentNode = currentNode.nextNode;
+      currentIndex += 1;
+    }
+
+    // We create the new node:
+    let newNode = new Node(value);
+    newNode.nextNode = currentNode.nextNode;
+
+    // We modify the link of the previous node to point to our new node:
+    currentNode.nextNode = newNode;
+  };
 }
 
 let node1 = new Node("once");
