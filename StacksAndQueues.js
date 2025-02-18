@@ -127,3 +127,61 @@ printManager.queuePrintJob("First Document");
 printManager.queuePrintJob("Second Document");
 printManager.queuePrintJob("Third Document");
 printManager.run();
+
+/** Because doubly linked lists have immediate access to both the front and end
+of the list, they can insert data on either side at O(1) as well as delete data on
+either side at O(1). Since doubly linked lists can insert data at the end in O(1)
+time and delete data from the front in O(1) time, they make the perfect
+underlying data structure for a queue.
+
+Here’s a complete example of a queue that is built upon a doubly linked list: */
+function DLLNode(data) {
+  this.data = data;
+  this.nextNode = null;
+  this.previousNode = null;
+}
+
+function DoubleyLinkedList(firstNode = null, lastNode = null) {
+  this.firstNode = firstNode;
+  this.lastNode = lastNode;
+
+  this.insertAtEnd = (value) => {
+    let newNode = new DLLNode(value);
+
+    // If there are no elements yet in the linked list:
+    if (!this.firstNode) {
+      this.firstNode = newNode;
+      this.lastNode = newNode;
+    } else {
+      newNode.previousNode = this.lastNode;
+      this.lastNode.nextNode = newNode;
+      this.lastNode = newNode;
+    }
+  };
+
+  this.removeFromFront = () => {
+    let removedNode = this.firstNode;
+    this.firstNode = this.firstNode.nextNode;
+
+    return removedNode;
+  };
+}
+
+function Queue() {
+  this.queue = new DoubleyLinkedList();
+  let removedNode = null;
+
+  this.enqueue = (value) => {
+    this.queue.insertAtEnd(value);
+  };
+
+  this.dequeue = () => {
+    removedNode = this.queue.removeFromFront();
+
+    return removedNode.data;
+  };
+
+  this.tail = () => {
+    return this.queue.lastNode.data;
+  };
+}

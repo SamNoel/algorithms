@@ -1,3 +1,5 @@
+/** SEE PAGE 209 FOR PRACTICAL EXAMPLE OF LINKED LISTS */
+
 function Node(data) {
   this.data = data;
   this.nextNode = null;
@@ -69,6 +71,26 @@ linked list. */
     // We modify the link of the previous node to point to our new node:
     currentNode.nextNode = newNode;
   };
+
+  this.deleteAtIndex = (index, value) => {
+    // We begin at the first node of the list:
+    let currentNode = this.firstNode;
+    let currentIndex = 0;
+
+    //  First, we find the index immediately before the node we want to delete:
+    while (currentIndex < index) {
+      // We keep following the links of each node until we get to the index we’re looking for:
+      currentNode = currentNode.nextNode;
+      currentIndex += 1;
+    }
+
+    // We find the node that comes after the one we’re deleting:
+    let nodeAfterDeletedNode = currentNode.nextNode.nextNode;
+
+    // We change the link of the current_node to point to the node_after_deleted_node,
+    // leaving the node we want to delete out of the list:
+    currentNode.nextNode = nodeAfterDeletedNode;
+  };
 }
 
 let node1 = new Node("once");
@@ -83,3 +105,33 @@ let list = new LinkedList(node1);
 console.log(list.read(3));
 
 console.log(list.searchByValue("time"));
+
+/** A doubly linked list is like a linked list, except that each node has two links—
+one that points to the next node, and one that points to the preceding node. In
+addition, the doubly linked list keeps track of both the first and last nodes. */
+
+// SEE IMPLEMENTATION IN StacksAndQueues.js
+function DLLNode(data) {
+  this.data = data;
+  this.nextNode = null;
+  this.previousNode = null;
+}
+
+function DoubleyLinkedList(firstNode = null, lastNode = null) {
+  this.firstNode = firstNode;
+  this.lastNode = lastNode;
+
+  this.insertAtEnd = (value) => {
+    let newNode = new DLLNode(value);
+
+    // If there are no elements yet in the linked list:
+    if (!this.firstNode) {
+      this.firstNode = newNode;
+      this.lastNode = newNode;
+    } else {
+      newNode.previousNode = this.lastNode;
+      this.lastNode.nextNode = newNode;
+      this.lastNode = newNode;
+    }
+  };
+}
